@@ -1,0 +1,143 @@
+:root {
+    --font-manrope: 'Manrope', sans-serif;
+    --font-poppins: 'Poppins', sans-serif;
+    --bg-body-1: #D7EAEA;
+    --bg-gray: #f4f4f4;
+
+    --color-white: #fff;
+    --color-light-1: #ecf8ef;
+    --body-margin-top: 40px;
+
+    --color-gray: #96B6C5;
+    --color-gray-2: #5b6f78;;
+    
+    --color-border-1: #F5F5F5;
+    --scroll-color-active: #aab7b8;
+
+    --color-style-1: #a3e2e2;
+
+}
+
+html {
+    font-size: 14px;
+}
+
+.font-poppins{
+    font-family: var(--font-poppins);
+}
+.font-poppins-bold{
+    font-family: var(--font-poppins);
+    font-weight: 500;
+}
+
+h1,h2,h3,h4,h5,h6{
+    font-family: var(--font-poppins);
+}
+h1{
+    font-weight: 900;
+}
+h2{
+    font-weight: 700;
+}
+.margin-top-9rem{
+    margin-top: 9rem;
+}
+
+body {
+    font-family: var(--font-manrope);
+    margin-top: 50px;
+}
+
+code {
+    font-size: 0.7rem;
+}
+
+a {
+    font-family: var(--font-manrope) !important;
+    cursor: pointer; 
+    color: #000;
+}
+
+.pointer {
+    cursor: pointer;
+}
+.fixed-top{
+    position: fixed; top: 0px;
+}
+.navbar a{
+    font-family: var(--font-poppins) !important;
+    font-weight: 500;
+}
+
+.bg-blur {
+    transition: opacity 150ms ease-out 0s;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(4px);
+  }
+
+.contentHeight{ 
+    height: 55.5vw !important;
+}
+.priceTableHeight{ 
+    min-height: 39.5vw !important;
+}
+
+.contentWidth{
+    margin: 0 auto;
+    max-width: 1024px;
+}
+
+.price-list div{
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.border-top-gray{
+    border-top: 10px solid var(--color-gray) !important;
+}
+.border-top-blue{
+    border-top: 10px solid #4477CE !important;
+}
+
+.border-top-dark{
+    border-top: 10px solid #000 !important;
+}
+
+
+.text-color-gray{
+    color: var(--color-gray-2);
+}
+.text-color-blue{
+    color: #4477CE;
+}
+.text-color-dark{
+    color: #000;
+}
+
+.global-height{
+    min-height: 90vh;
+}
+
+.content-md{
+    margin:  0 auto;
+    max-width: 960px;
+}
+
+.content-sm{
+    margin:  0 auto;
+    max-width: 800px;
+}
+.mt-xl{
+    margin-top: 5rem;
+}
+.center-line {
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .line {
+    flex-grow: 1;
+    height: 0.5px;
+    background-color: #000;
+  }
