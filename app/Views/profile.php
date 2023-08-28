@@ -1,94 +1,66 @@
 <?= $header; ?>
-
+<style>
+    body {
+        background-color: #f0f2f5;
+    }
+</style>
 <div class="global-height content-sm mt-xl">
-
-    <div class="container ">
-        <div class="row mb-5">
-            <div class="col-4 text-center">
-                <img src="https://i.pravatar.cc/140?img=31" class="rounded-circle w-10075 my-4">
-            </div>
-            <div class="col-8">
-                <h1 class="fs-4">Alexandra Anna <i class="bi bi-patch-check-fill"></i></h1>
-                <div>
-                    @reynave
-                    <div class="my-1">
-                        Li Europan lingues es membres del sam familie. Lor separat existentie es un myth.
-                        Por scientie, musica, sport etc, litot Europa usa li sam vocabular.
-                    </div>
-                    <div>
-                        <div class="d-flex">
-                            <div class="me-2"><i class="bi bi-youtube"></i></div>
-                            <div>
-                                <a href="">https://youtu.be/v3_25j8BFE8</a>
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                            <div class="me-2"><i class="bi bi-facebook"></i></div>
-                            <div>
-                                <a href="">https://youtu.be/v3_25j8BFE8</a>
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                            <div class="me-2"><i class="bi bi-instagram"></i></div>
-                            <div>
-                                <a href="">https://youtu.be/v3_25j8BFE8</a>
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                            <div class="me-2"><i class="bi bi-twitter"></i></div>
-                            <div>
-                                <a href="">https://youtu.be/v3_25j8BFE8</a>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        
+    <div class="container">
         <div class="row">
-            <div class="col-2 text-center">
-                <a href="https://trader.ftmo.com/certificates/verify?hash=qfyc11Y9gpAUZtoOYSFOBA" target="_blank"><i
-                        class="fs-2 bi bi-award"></i>
-                    <div>FTMO</div>
-                </a>
-            </div>
-        </div>
+            <div class="col-3">
 
-        <div class="row g-3">
-            <div class="col-12">
-                <div class="center-line my-2">
-                    <div class="line"></div>
-                    <div class="mx-3"><small>My Journal</small></div>
-                    <div class="line"></div>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="border shadow-sm rounded bg-white p-2">
-                    <img src="https://picsum.photos/id/231/300/254" class="w-100">
-                    <div class="py-2">
-                        <a href=""> Smart Money Concept tested 101</a>
+                <h1 class="fs-4">
+                    <?= $username; ?> <i class="bi bi-patch-check-fill"></i>
+                </h1>
+                <div class="text-center">
+                    <img src="<?= $user['detail']['picture']; ?>" class="rounded-circle w-10075 my-4">
+                    <div>
+                        <strong>
+                            <?= $username; ?>
+                        </strong>
                     </div>
+                     
+                    <div class="me-2"><a href="" class="fs-4"><i class="bi bi-youtube"></i></a></div>
+                    
                 </div>
-            </div>
-            <div class="col-4">
-                <div class="border shadow-sm rounded bg-white p-2">
-                    <img src="https://picsum.photos/id/94/300/254" class="w-100">
-                    <div class="py-2">
-                        <a href=""> Smart Money Concept tested 101</a>
+
+                <div> 
+                    <div class="my-1">
+                        <?= $user['detail']['description']; ?>
                     </div>
+
                 </div>
+
             </div>
-            <div class="col-4">
-                <div class="border shadow-sm rounded bg-white p-2">
-                    <img src="https://picsum.photos/id/42/300/254" class="w-100">
-                    <div class="py-2">
-                        <a href=""> Smart Money Concept tested 101</a>
+
+            <div class="col-9">
+                <div class="">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="center-line my-2">
+                                <div class="line"></div>
+                                <div class="mx-3"><small>My Journal</small></div>
+                                <div class="line"></div>
+                            </div>
+                        </div>
+                        <?php foreach ($user['journal'] as $row) { ?>
+                            <div class="col-4 mb-3">
+                                <div class="border shadow-sm bg-white p-1">
+                                    <a href="<?= base_url().'shared/'.$row['url']."/".url_title($row['name']) ?>">
+                                        <img src="<?= $row['image'] ?>" class="w-100">
+                                        <div class="py-2">
+                                            <?= $row['name'] ?>
+                                        </div> 
+                                    </a>
+                                </div>
+                            </div>
+                        <?php } ?>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 
 </div>

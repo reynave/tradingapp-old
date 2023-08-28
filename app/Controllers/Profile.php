@@ -23,7 +23,7 @@ class Profile extends BaseController
             $user = array(
                 "username" => $username,
                 "detail" => $detail->getResultArray()[0],
-                "sosialMedia" => $sosialMedia->getResultArray(),
+                "sosial_media" => $sosialMedia->getResultArray(),
                 "achievement" => $achievement->getResultArray(),
                 "journal" => $journal->getResultArray(),
             );
