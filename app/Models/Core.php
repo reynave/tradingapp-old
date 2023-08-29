@@ -147,7 +147,8 @@ class Core extends Model
 
 
 
-        $c = "SELECT *, CONCAT('f',f) AS 'key', '' as showEvalDev , '' as 'total'
+        $c = "SELECT id, ilock, hideDEL, name, f,iType, width, textAlign, suffix, sorting, eval, 
+        CONCAT('f',f) AS 'key', '' as showEvalDev , '' as 'total'
         FROM journal_custom_field 
         WHERE journalId = '$id' AND presence = 1
         ORDER BY sorting ASC ";
