@@ -7,48 +7,66 @@ class Profile extends BaseController
     function index($username = "")
     {
         $get = $this->request->getVar();
-
+        // self::saveImage();
         $username = str_replace(["'", "\'", '"', "#"], "", $username);
         $id = model("Core")->select("id", "account", "username = '$username' and status != 0 and presence = 1");
         if ($id != '') {
-            $detail = $this->db->query("SELECT id, username,  description, picture  
+            $detail = $this->db->query("SELECT id, username, picture,description, party
             FROM account WHERE username = '$username' ");
 
             $sosialMedia = $this->db->query("SELECT * FROM account_sosmed WHERE accountId = '$id' ");
             $achievement = $this->db->query("SELECT * FROM account_achievement WHERE accountId = '$id' ");
+
+
             $journal = $this->db->query("SELECT url, name, image
             FROM journal 
             WHERE accountId = '$id' AND permissionId =  20 AND presence = 1 ORDER BY update_date DESC ");
 
-            $user = array(
+            $team = $this->db->query("SELECT   a.id, a.username, a.picture
+            FROM account_team AS t
+            LEFT JOIN account AS a ON a.id = t.invitedId
+            WHERE t.accountId = '$id' AND t.`status` = 1 AND t.presence =1
+            ");
+
+            $data = array(
                 "username" => $username,
                 "detail" => $detail->getResultArray()[0],
                 "sosial_media" => $sosialMedia->getResultArray(),
                 "achievement" => $achievement->getResultArray(),
                 "journal" => $journal->getResultArray(),
+                "team" => $team->getResultArray(),
             );
 
-            $data = array(
-                "header" => view('app_global/nav'),
-                "username" => $username,
-                "user" => $user,
-            );
+
+
 
             if (isset($get['data'])) {
                 if ($get['data'] == 'json') {
-                    return $this->response->setJSON($user);
+                    return $this->response->setJSON($data);
                 }
-                return view('json', $data);
             }
-
 
             return view('website_global/header')
                 . view('profile', $data)
-                . view('website_global/footer');
+                . view('app_global/footer');
         }
         throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
     }
 
+
+    function saveImage()
+    {
+        $file = 'https://lh3.googleusercontent.com/a/AAcHTteF-aAeCUrnrEsBw0F8ma24A2kHTqOzCXVzRlwIMfyd6DM=s96-c';
+
+
+        $newfile = FCPATH . '/upload//yoyo.jpg';
+
+        if (copy($file, $newfile)) {
+            echo "Copy success!";
+        } else {
+            echo "Copy failed.";
+        }
+    }
 
     function shared($url = "", $name = "")
     {
@@ -75,16 +93,35 @@ class Profile extends BaseController
             ];
 
             $board = model("Core")->select("board", "journal_table_view", "id = '$journalTableViewId' ");
-            if ($board  == 'table') {
+            if ($board == 'table') {
                 $data = self::table($obj);
-            }
-            else if ($board  == 'chart') {
+            } else if ($board == 'chart') {
                 $data = self::chart($obj);
             }
+        }
 
+        $q = "SELECT  j.*, a.username, a.picture,  p.name AS 'plan', a.party, p.icon
+        FROM journal as j
+        JOIN account as a on a.id = j.accountId
+        JOIN plans AS p ON p.id = a.plansId
+        where j.url = '$url' and j.presence = 1";
+
+        $data['journal'] = $this->db->query($q)->getResultArray()[0];
+
+
+        if (isset($get['data'])) {
+            if ($get['data'] == 'json') {
+                return $this->response->setJSON($data);
+            }
 
         }
-        return $this->response->setJSON($data);
+
+
+        //$board = model("Core")->select("board", "journal_table_view", " id = '$journalTableViewId' ");
+
+        return view('website_global/header')
+            . view($board, $data)
+            . view('app_global/footer');
     }
 
 
@@ -97,15 +134,15 @@ class Profile extends BaseController
         $limit = $obj['limit'];
 
         $journalTable = model("Core")->journalTable($id, $journalTableViewId, "", $order, $limit);
-        $header = array_merge(
-            array(
-                [
-                    "tabs" => model("Core")->select("name", "journal_table_view", "ilock=1 and journalId = '$id' "),
-                ]
-            ), $journalTable['header']
-        );
-        $header = self::mergeArrayOfObjects($header);
-        $journal = $this->db->query("SELECT * FROM journal WHERE id = '$id' and presence = 1  ");
+        // $header = array_merge(
+        //     array(
+        //         [
+        //             "tabs" => model("Core")->select("name", "journal_table_view", "ilock=1 and journalId = '$id' "),
+        //         ]
+        //     ), $journalTable['header']
+        // );
+        //$header = self::mergeArrayOfObjects($header);
+        $header = $journalTable['header'];
 
         $journal_table_view = $this->db->query("SELECT id, name, board 
             FROM journal_table_view 
@@ -123,18 +160,18 @@ class Profile extends BaseController
 
         $data = array(
             "error" => false,
-            "journal" => $journal->getResultArray()[0],
+
             "bookmark" => array(
                 "count" => (int) model("Core")->select("count(id)", "account_bookmark", "journalId = '$id' and presence = 1 "),
             ),
-
             "pages" => [
                 "page" => $order + 1,
                 "limit" => $limit,
                 "total" => $journalTable['total'],
             ],
-            "header_field" => $journalTable['journal_custom_field'],
-            "header" => $header,
+            "headers" => $header,
+            "journal_custom_field" => $journalTable['journal_custom_field'],
+
             "detail" => $journalTable['detail'],
             "tabs" => $tabs,
         );
@@ -142,29 +179,27 @@ class Profile extends BaseController
         return $data;
     }
 
-
-
     function chart($obj = [])
     {
-       
 
-      
-       // $id = $obj['id'];
+
+
+        // $id = $obj['id'];
         $journalId = $obj['journalId'];
         $journalTableViewId = $obj['journalTableViewId'];
-        
 
-       /* $data = array(
-            "error" => true,
-            "request" => $this->request->getVar(),
-        );*/
-       // $journalId = $data['request']['id'];
-     //   $journalTableViewId = $data['request']['journalTableViewId'];
-       
+
+        /* $data = array(
+             "error" => true,
+             "request" => $this->request->getVar(),
+         );*/
+        // $journalId = $data['request']['id'];
+        //   $journalTableViewId = $data['request']['journalTableViewId'];
+
 
 
         $id = model("Core")->select("journalId", "journal_access", "journalId = '" . $journalId . "' and presence = 1");
-        if ( $id) {
+        if ($id) {
 
 
             $journalTable = model("Core")->journalChart($id, $journalTableViewId);
@@ -280,11 +315,9 @@ class Profile extends BaseController
                 ), $journal_table_view->getResultArray()
             );
 
-            $journal = $this->db->query("SELECT * FROM journal WHERE id = '$id' and presence = 1  ");
-
             $data = array(
-                "error" => false, 
-                "journal" => $journal->getResultArray()[0],
+                "error" => false,
+
                 "bookmark" => array(
                     "count" => (int) model("Core")->select("count(id)", "account_bookmark", "journalId = '$id' and presence = 1 "),
                 ),
@@ -304,13 +337,27 @@ class Profile extends BaseController
     private function mergeArrayOfObjects($arrays)
     {
         $result = [];
-
         foreach ($arrays as $array) {
             foreach ($array as $key => $value) {
                 $result[$key] = $value;
             }
         }
 
+        return [$result];
+    }
+
+    private function arrayStaticToDinamic($arrays)
+    {
+        $result = [];
+        foreach ($arrays as $array) {
+            foreach ($array as $key => $value) {
+                $result[] = array(
+                    "key" => $key,
+                    "label" => $value,
+                );
+
+            }
+        }
         return [$result];
     }
 

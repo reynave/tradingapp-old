@@ -170,7 +170,10 @@ class Core extends Model
 
                 array_push($journal_custom_field, array_merge($r, $temp));
                 $header[] = array(
-                    "f" . $r['f'] => $r['name']
+                    "value" => $r['name'],
+                    "key"  => $r['f'],
+                    "width"=> $r['width'],
+                    "textAlign"=> $r['textAlign'], 
                 );
             }
         }
@@ -178,13 +181,18 @@ class Core extends Model
 
         $customField = "";
         $customFieldNo = [];
+        $i = 0;
         foreach ($journal_custom_field as $r) {
-            $customField .= ", f" . $r['f'];
+            if($i == 0) $customField .= " f" . $r['f'];
+            else{
+                $customField .= ", f" . $r['f'];
+            } 
             array_push($customFieldNo, "f" . $r['f']);
+            $i++;
         }
 
 
-        $q = "SELECT id  $customField 
+        $q = "SELECT   $customField 
         FROM journal_detail 
         where journalId = '$id' $where
         AND presence = 1 order by sorting ASC limit $order, $limit";
@@ -200,8 +208,12 @@ class Core extends Model
             $data = [];
             foreach ($journal_custom_field as $field) {
                 $val = [
+                   // "key" => [$index][$field['key']],
                     "value" => $rec[$field['key']],
                     "color" => "",
+                    "suffix" => $field['suffix'],
+                    "iType" => $field['iType'],
+                    
                 ];
                 if ($field['iType'] == 'formula') {
                     foreach (array_keys($rec) as $key) {
@@ -223,19 +235,25 @@ class Core extends Model
                     if ($val['value'] != "") {
                         $i = self::index2d($account, $val['value'] );
                         $val['value'] = $account[$i]['value'];
-                    }
-                  
+                    } 
                 }
 
+                
+                
+
                 $detail[$index][$field['key']] = $val;
+               
+              
             }
             $index++;
         }
  
+        self::transformDetailArray($detail);
+        
         $data = array(
             "header" => $header,
             "journal_custom_field" => $journal_custom_field,
-            "detail" => $detail,
+            "detail" => $detail, 
             "journal_select" => $journal_select,
             "account" => $account,
             "total" => (int)self::select("count(id)","journal_detail","journalId = '$id' $where AND presence = 1 "),
@@ -243,6 +261,27 @@ class Core extends Model
 
         return $data;
     }
+
+
+    function transformDetailArray(&$array) {
+        foreach ($array as &$item) {
+            $transformedItem = [];
+    
+            foreach ($item as $key => $value) {
+                $transformedItem[] = [
+                    'key' => $key,
+                    'value' => $value['value'],
+                    'color' => $value['color'],
+                    'suffix' => $value['suffix'],
+                    'iType' => $value['iType'],
+                    
+                ];
+            }
+    
+            $item = $transformedItem;
+        }
+    }
+
 
     function index2d($array = [], $id = "")
     {

@@ -32,7 +32,7 @@ $routes->setAutoRoute(true);
 $routes->get('pricing', 'Home::pricing');
 $routes->get('shared/(:segment)/(:segment)', 'Profile::shared/$1/$2'); 
   
-$routes->get('(:segment)', 'Profile::index/$1');
+$routes->get('(:segment)', 'Profile::index/$1'); 
  
 $routes->get('/', 'Home::index');
 
