@@ -12,9 +12,10 @@
                         Together</a>
                 </li>
             </ul>
-            <div class="d-flex">
-                <a href="" class="btn btn-light border px-4 mx-2">SHARE YOUR JOURNAL</a>
-                <a href="" class="btn btn-dark px-4">SIGN IN</a>
+            <div class="d-flex"> 
+                <a href="<?= base_url()?>signin" id="singin" class="btn btn-dark px-4">SIGN IN</a>
+                <a href="<?= $_ENV['HOME_APP']?>" id="signed" class="btn btn-info px-4 text-white " style="display:none;">GO TO APP</a>
+                
             </div>
         </div>
     </div>

@@ -1,0 +1,51 @@
+:root {
+    --blue: #1e90ff;
+    --white: #ffffff;
+    --bg-gray : #f2f2f2;
+    --font-manrope  : 'Manrope', sans-serif;
+    --font-poppins :  'Poppins', sans-serif;
+}
+
+h1,h2,h3,h4{
+    font-family: var(--font-poppins);
+    font-weight: bolder;
+}
+h5{
+    font-family: var(--font-manrope);
+}
+*{
+    font-family: var(--font-poppins);     
+}
+strong{
+    font-weight: 900;
+}
+body{
+    background-color: var(--bg-gray);
+}
+
+.wrapper{
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.login{
+    position: relative;
+    margin-top: 2rem;
+    height: calc(100vh - 4rem);
+}
+
+.signin-content{
+    
+}
+
+.center-line {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #000;
+}

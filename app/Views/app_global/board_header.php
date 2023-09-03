@@ -1,4 +1,4 @@
-<div class="container mb-3 pt-4">
+<div class="container mb-5 pt-4">
     <div class="row">
         <div class="col-10">
             <div class="d-flex">
@@ -11,11 +11,11 @@
                         <?= $journal['name']; ?>
                     </h1>
                     <div>
-                        <div class="input-group">
+                        <div class="input-group border px-2 rounded">
                             <div class="me-2">
-                               <small> <i class="bi bi-share"></i></small>
+                                <small> <i class="bi bi-share"></i></small>
                             </div>
-                            <input type="text" class="form-control form-control-sm border-0 p-0 d-inline"
+                            <input style="min-width: 400px;" type="text" class="form-control form-control-sm border-0 p-0 d-inline shadow-none"
                                 value="<?= base_url() . 'shared/' . $journal['url'] . '/sharelink'; ?>" readonly>
                         </div>
                     </div>
@@ -27,8 +27,10 @@
                                     <?= ucwords($journal['username']); ?>
                                 </small>
                             </a>
-                            <img src="<?= base_url() . 'assets/icon/' . $journal['icon']; ?>"
-                                title="<?= $journal['plan']; ?>" class="mx-1" width="20">
+                            <?php if ($journal['icon'] != '') { ?>
+                                <img src="<?= base_url() . 'assets/icon/' . $journal['icon']; ?>"
+                                    title="<?= $journal['plan']; ?>" class="mx-1" width="20">
+                            <?php } ?>
 
                         </div>
                         <div class="align-self-center mx-3"> | </div>
@@ -60,8 +62,10 @@
             <a href="" class="btn btn-sm rounded btn-light border me-1" data-bs-toggle="tooltip"
                 data-bs-title="Reports"><i class="bi bi-flag fs-5"></i></a>
 
-            <a href="javascript:;"  onclick="copyToClipboard('<?= base_url() . 'shared/' . $journal['url'] . '/sharelink'; ?>')" class="btn btn-sm rounded btn-light border me-1" data-bs-toggle="tooltip"
-                data-bs-title="Share"><i class="bi bi-share fs-5"></i></a>
+            <a href="javascript:;"
+                onclick="copyToClipboard('<?= base_url() . 'shared/' . $journal['url'] . '/sharelink'; ?>')"
+                class="btn btn-sm rounded btn-light border me-1" data-bs-toggle="tooltip" data-bs-title="Share"><i
+                    class="bi bi-share fs-5"></i></a>
 
             <a href="" class="btn btn-sm rounded btn-light border me-1" data-bs-toggle="tooltip"
                 data-bs-title="Save to my Bookmark"><i class="bi bi-bookmark fs-5"></i></a>
@@ -72,7 +76,6 @@
 </div>
 
 
-
 <div class="container mb-3">
     <div class="row mb-2">
         <div class="col-12">
@@ -81,7 +84,7 @@
                 foreach ($tabs as $row) {
                     ?>
                     <li class="nav-item">
-                        <a class="nav-link <?php // $_GET['tab'] == $row['id'] ? "active" : "" ?>"
+                        <a class="nav-link <?= $journalTableViewId == $row['id'] ? "active" : "" ?> "
                             aria-current="<?= $row['name']; ?>" href="?tab=<?= $row['id']; ?>"><?= $row['name']; ?></a>
                     </li>
                     <?php
@@ -91,6 +94,3 @@
         </div>
     </div>
 </div>
-
-
- 

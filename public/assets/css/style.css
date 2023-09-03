@@ -189,6 +189,13 @@ footer a{
     border-color: #000;
 }
 
+.journal-slick .active{
+    background-color: #f8f9fa !important ;
+    color: #000;
+    border-color: #000;
+    border-bottom: #fff !important;
+}
+
 .dtable{ 
     border-top: 1px solid #d1cfcf;
    

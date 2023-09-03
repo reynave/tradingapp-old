@@ -18,11 +18,19 @@
         ordering: false,
     });
     $(document).ready(function () {
+      
         $('.journal-slick').slick({
             slidesToScroll: 4,
             infinite: false,
             variableWidth: true
         });
+
+        if(localStorage.getItem("app.mirrel.com") ){
+            $('#singin').hide();
+            $('#signed').show();
+           
+        }
+        console.log(localStorage.getItem("app.mirrel.com") );
     });
     
     function copyToClipboard(text) {
