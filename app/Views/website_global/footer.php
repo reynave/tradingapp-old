@@ -24,20 +24,12 @@
 <script src="http://localhost:35729/livereload.js?snipver=1"></script>
 
 <script>
-    //  const hash = location.hash;
-    //const triggerEl = document.querySelector(hash);
-    // console.log(triggerEl);
-    let table = new DataTable('#dtjournal',{
-        scrollX: true,
-        pageLength: 100,
-        ordering:false,
-    });
+ 
     $(document).ready(function () {
-        $('.journal-slick').slick({ 
-            slidesToScroll: 4, 
-            infinite: false,
-            variableWidth: true
-        });
+        if(localStorage.getItem("app.mirrel.com") ){
+            $('#singin').hide();
+            $('#signed').show(); 
+        } 
     });
 </script>
 </body>

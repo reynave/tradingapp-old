@@ -1,4 +1,4 @@
-<?php echo $header;?>
+<?=  view('website_global/nav');?>
 
 <div class="contentHeight ">
     <div class="container ">

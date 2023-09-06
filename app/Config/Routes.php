@@ -30,7 +30,10 @@ $routes->setAutoRoute(true);
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('pricing', 'Home::pricing');
-$routes->get('signin', 'Signin::index');
+$routes->get('about', 'Home::about'); 
+$routes->get('signin', 'Signin::index'); 
+
+
 $routes->get('signin/config.js', 'Signin::configjs');
 
 $routes->get('shared/(:segment)/(:segment)', 'Shared::index/$1/$2'); 

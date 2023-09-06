@@ -208,3 +208,6 @@ footer a{
     color: #000; 
 }
 
+.header .active{
+    border-bottom: 4px solid #333;
+}

@@ -7,12 +7,19 @@ class Home extends BaseController
     public function index(): string
     {
         //return view('welcome_message');
-        $data = array(
-            "header" => view('website_global/nav'), 
-        );
+        
         
         return  view('website_global/header')
-            .view('website_home',$data)
+            .view('website_home')
+            .view('website_global/footer');
+        
+    }
+
+    public function about(): string
+    {
+        
+        return  view('website_global/header')
+            .view('website_about')
             .view('website_global/footer');
         
     }
@@ -25,7 +32,7 @@ class Home extends BaseController
             "pricing" => array(
                 [
                     "id" => 1,
-                    "level" => "Hobby",
+                    "level" => "Personal",
                     "price" => "0",
                     "billed" => "forever",
                     "levelPlus" => "What's included",
@@ -36,7 +43,7 @@ class Home extends BaseController
                 ],
                 [
                     "id" => 2,
-                    "level" => "Traders",
+                    "level" => "Pro",
                     "price" => "5",
                     "billed" => "month", 
                     "specialNote" => "Request free Trial",

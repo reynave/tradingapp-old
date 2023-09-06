@@ -27,10 +27,8 @@
 
         if(localStorage.getItem("app.mirrel.com") ){
             $('#singin').hide();
-            $('#signed').show();
-           
-        }
-        console.log(localStorage.getItem("app.mirrel.com") );
+            $('#signed').show(); 
+        } 
     });
     
     function copyToClipboard(text) {
