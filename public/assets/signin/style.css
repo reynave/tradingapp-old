@@ -49,3 +49,28 @@ body{
     height: 1px;
     background-color: #000;
 }
+
+.btn{
+    font-size: 1rem;
+}
+.warning{
+     font-size: 0.9rem;
+}
+
+.form-signin { 
+    
+  }
+  
+  .form-signin .form-floating:focus-within {
+    z-index: 2;
+  }
+  label{
+    font-size: 0.9rem;
+  }
+  
+  .form-signin input {
+    font-size: 0.9rem;
+    margin-bottom: -1px;
+    border-radius: 0 !important;
+    border-radius: 0 !important;
+  }
