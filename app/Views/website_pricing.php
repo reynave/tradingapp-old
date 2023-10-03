@@ -12,33 +12,53 @@
     <div class="container">
         <div class="row">
 
-            <?php foreach($pricing as $p) { ?>
+            <?php
+            $i = 0;
+            foreach ($pricing as $p) { ?>
                 <div class="col-12 col-md-4">
-                    <div class="border shadow p-4 border-top-<?=$p['color']?> rounded priceTableHeight">
-                        <h2 class="text-color-<?=$p['color']?>"> <?=$p['level']?></h2>
-                        <div> 
-                            <strong class="display-3 font-poppins-bold text-color-<?=$p['color']?>">$<?=$p['price']?></strong>
-                            <strong class="fs-3 ">/ <?=$p['billed']?></strong>  
+                    <div class="border shadow p-4 border-top-<?= $p['color'] ?> rounded priceTableHeight">
+                        <h2 class="text-color-<?= $p['color'] ?>">
+                            <?= $p['level'] ?>
+                        </h2>
+                        <div>
+                            <strong class="display-3 font-poppins-bold text-color-<?= $p['color'] ?>">$
+                                <?= $p['price'] ?>
+                            </strong>
+                            <strong class="fs-3 ">/
+                                <?= $p['billed'] ?>
+                            </strong>
                         </div>
- 
+
                         <div class="d-grid my-4">
-                            <button  class="btn btn-lg btn-outline-dark mb-2" <?php echo ( $p['id'] < 99 )? "":"disabled";?>>Get Started</button> 
+                            <button class="btn btn-lg btn-outline-dark mb-2" <?php if ($i > 0)
+                                echo 'disabled'; ?> onclick="location.href='<?php echo base_url() ?>signin'">Get Started</button>
                             <div class="text-center">
-                               <strong> <?=$p['specialNote']?></strong>
+                                <strong>
+                                    <?= $p['specialNote'] ?>
+                                </strong>
                             </div>
+
+                            <div class="text-center"> Cancel anytime </div>
                         </div>
-                       
+
                         <hr>
-                        <div class="my-2"><strong class="fs-5"> <?=$p['levelPlus'];?></strong> </div>
-                        <div class="price-list"> 
-                            <?php foreach($p['items'] as $row){?>
-                            <div><img src="./assets/icon/done-dark.png" height="18"> <?=$row?></div> 
-                            <?php } ?> 
+                        <div class="my-2"><strong class="fs-5">
+                                <?= $p['levelPlus']; ?>
+                            </strong> </div>
+                        <div class="price-list">
+                            <?php foreach ($p['items'] as $row) { ?>
+                                <div><img src="./assets/icon/done-dark.png" height="18">
+                                    <?= $row ?>
+                                </div>
+                            <?php } ?>
                         </div>
- 
+
+
                     </div>
                 </div>
-            <?php } ?>
+                <?php
+                $i++;
+            } ?>
 
         </div>
     </div>

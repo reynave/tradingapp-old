@@ -3,8 +3,23 @@
 
 <head>
     <meta charset="UTF-8">
+    <title>MIRREL.COM - Signin</title> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mirrel.com Login</title>
+    <meta name="description" content="Have you ever yearned to meticulously track your trading journey?">
+    <meta name="keywords" content="Journal, Collaboration, Trading, Together, Forex, Crypto, Stock, Tradingview, Signal, FTMO, Prop Firm Forex">
+    
+    <meta property="og:title" content="Signin Mirrel.com">
+    <meta property="og:description" content="Journal, Collaboration, Trading. With Unlocking Trader Success, Together">
+    <meta property="og:image" content="<?php echo base_url()?>metaimg.jpg">
+    <meta property="og:url" content="<?php echo base_url()?>signin">
+    <meta property="og:site_name" content="Mirrel.com">
+    <meta property="og:type" content="website">
+    
+    <meta name="twitter:card" content="summary_large_image"> 
+    <meta name="twitter:title" content="Mirrel.com">
+    <meta name="twitter:description" content="Journal, Collaboration,Trading. With Unlocking Trader Success, Together">
+    <meta name="twitter:image" content="<?php echo base_url()?>metaimg.jpg">
+  
     <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -101,10 +116,10 @@
     <script src="<?= base_url() ?>assets/plugin/md5.min.js"></script>
     <script src="<?= base_url() ?>signin/config.js"></script>
     <script src="<?= base_url() ?>assets/signin/app.js"></script>
-    <script>
+    <!-- <script>
         document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] +
             ':35729/livereload.js?snipver=1"></' + 'script>')
-    </script>
+    </script> -->
 </body>
 
 </html>

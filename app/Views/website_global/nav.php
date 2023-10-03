@@ -8,7 +8,7 @@
             <div class="collapse navbar-collapse" id="navbarsExample03">
                 <ul class="navbar-nav me-auto mb-2 mb-sm-0 header">
                     <li class="nav-item">
-                        <a class="nav-link active mx-md-3" aria-current="page" href="#">HOME</a>
+                        <a class="nav-link active mx-md-3" aria-current="page" href="<?php echo base_url();?>">HOME</a>
                     </li>
 
                     <li class="nav-item">

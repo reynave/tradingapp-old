@@ -10,7 +10,7 @@ class Home extends BaseController
         
         
         return  view('website_global/header')
-            .view('website_home')
+            .view('website_home_simple')
             .view('website_global/footer');
         
     }
@@ -37,8 +37,9 @@ class Home extends BaseController
                     "billed" => "forever",
                     "levelPlus" => "What's included",
                     "specialNote" => "Let's Go!",
-                    "items" => array('Unlimited Viewers', 'Unlimited Teams', 'Books', 'Journals', 'Chart', 'Personal Pages', 
-                    'Share Porfolio', 'Realtime Collaborative', '100 Upload Photo'),
+                    "items" => array('Unlimited Viewers', 'Unlimited Teams', 'Unlimited Books', 'Unlimited Journals',
+                    '1k task per journal','Chart', 'Personal Pages', 
+                    'Share Porfolio', 'Realtime Collaborative'),
                     "color" => "gray",
                 ],
                 [
@@ -46,9 +47,9 @@ class Home extends BaseController
                     "level" => "Pro",
                     "price" => "5",
                     "billed" => "month", 
-                    "specialNote" => "Request free Trial",
+                    "specialNote" => "SOON",
                     "levelPlus" => "Included Hobby, plus :",
-                    "items" => array('Access Right', '5GB Upload Photo', 'Calculation Real <b>Broker</b>', 'Share Signal','Customer support' ),
+                    "items" => array('No Ads','10k task per journal','Access Right', '5GB Upload Photo', 'Calculation Real <b>Broker</b>', 'Share Signal','Customer support', ),
                     "color" => "blue",
                 ],
                 [
@@ -58,7 +59,7 @@ class Home extends BaseController
                     "billed" => "month",
                     "specialNote" => "Contact Us",
                     "levelPlus" => "Included Traders, plus :",
-                    "items" => array( 'Unlimted Upload Photo'),
+                    "items" => array( 'Contact Us'),
                     "color" => "dark",
                 ],
             )

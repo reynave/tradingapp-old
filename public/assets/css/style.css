@@ -58,7 +58,9 @@ body {
     font-family: var(--font-manrope);
     margin-top: 50px;  
 }
-
+content{
+    z-index: 9999;
+}
 code {
     font-size: 0.7rem;
 }
@@ -92,8 +94,9 @@ a {
     backdrop-filter: blur(4px);
 }
 
+ 
 .contentHeight {
-    height: 55.5vw !important;
+    min-height: 38.5vw !important;
 }
 
 .priceTableHeight {
@@ -210,4 +213,13 @@ footer a{
 
 .header .active{
     border-bottom: 4px solid #333;
+}
+
+.bgn{
+    position: absolute;
+    z-index: -1; 
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
 }

@@ -1,10 +1,7 @@
 <?= view('app_global/nav'); ?>
-
  
 <?= view('app_global/board_header'); ?>
-
-
-
+ 
 <div class="container mb-5">
     <table id="dtjournal" class="display nowrap dtable" style="width:100%">
         <thead>

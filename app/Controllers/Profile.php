@@ -11,9 +11,9 @@ class Profile extends BaseController
         $username = str_replace(["'", "\'", '"', "#"], "", $username);
         $id = model("Core")->select("id", "account", "username = '$username' and status != 0 and presence = 1");
         if ($id != '') {
-            $detail = $this->db->query("SELECT id, username, picture,description, party
+            $detail = $this->db->query("SELECT id, username, concat('".$_ENV['API_APP']."uploads/picture/',picture) as 'picture', description, party
             FROM account WHERE username = '$username' ");
-
+      
             $sosialMedia = $this->db->query("SELECT * FROM account_sosmed WHERE accountId = '$id' ");
             $achievement = $this->db->query("SELECT * FROM account_achievement WHERE accountId = '$id' ");
 
