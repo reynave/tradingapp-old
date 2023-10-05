@@ -37,7 +37,9 @@ $routes->get('signin', 'Signin::index');
 $routes->get('signin/config.js', 'Signin::configjs');
 
 $routes->get('shared/(:segment)/(:segment)', 'Shared::index/$1/$2'); 
-  
+$routes->get('shared/(:segment)', 'Shared::shorcut/$1'); 
+$routes->get('d/(:segment)/(:segment)', 'Shared::d/$1/$2'); 
+    
 $routes->get('(:segment)', 'Profile::index/$1'); 
  
 $routes->get('/', 'Home::index');

@@ -72,7 +72,16 @@ class Shared extends BaseController
 
         if ($id && $journalTableViewId !== null) {
 
-            return view('website_global/header')
+            $header = array(
+                "title" => $data['journal']['name']." by ".ucwords($data['journal']['username'])." on Mirrel.com",
+                "description" => $data['journal']['name']." by ".ucwords($data['journal']['username'])." on Mirrel.com. Unlocking Trader Success, Together on Mirrel.com; the global community for trader professionals.",
+                "image" => $data['journal']['image'],
+                "url" => base_url()."shared/".$data['journal']['url']."/".url_title($data['journal']['name']), 
+                "canonical" => base_url()."shared/".$data['journal']['url']."/".url_title($data['journal']['name'])
+            );
+
+
+            return view('website_global/header', $header )
                 . view($board, $data)
                 . view('app_global/footer');
         }
@@ -81,44 +90,127 @@ class Shared extends BaseController
             . view('app_global/footer');
     }
 
-
-    private function table($obj = [])
-    {
-        $id = $obj['id'];
-        $journalId = $obj['journalId'];
-        $journalTableViewId = $obj['journalTableViewId'];
-        $order = $obj['order'];
-        $limit = $obj['limit'];
-
-        $journalTable = model("Core")->journalTable($id, $journalTableViewId, "", $order, $limit);
-        // $header = array_merge(
-        //     array(
-        //         [
-        //             "tabs" => model("Core")->select("name", "journal_table_view", "ilock=1 and journalId = '$id' "),
-        //         ]
-        //     ), $journalTable['header']
-        // );
-        //$header = self::mergeArrayOfObjects($header);
-        $header = $journalTable['header'];
+    function shorcut($url){ 
+        $get = $this->request->getVar();
  
-        $data = array(
-            "error" => false,
+        $url = str_replace(["'", "\'", '"', "#"], "", $url);
+        $id = model("Core")->select("id", "journal", "url = '$url'  AND presence = 1 AND permissionId = 20");
+     
+        $q = "SELECT  j.*, a.username, a.picture,  p.name AS 'plan', a.party, p.icon
+        FROM journal as j
+        JOIN account as a on a.id = j.accountId
+        JOIN plans AS p ON p.id = a.plansId
+        where j.url = '$url' and j.presence = 1"; 
+        $data['journal'] = $this->db->query($q)->getResultArray()[0]; 
+ 
+        if (isset($get['data'])) {
+            if ($get['data'] == 'json') {
+                return $this->response->setJSON($data);
+            }
+        }
 
-            "bookmark" => array(
-                "count" => (int) model("Core")->select("count(id)", "account_bookmark", "journalId = '$id' and presence = 1 "),
-            ),
-            "pages" => [
-                "page" => $order + 1,
-                "limit" => $limit,
-                "total" => $journalTable['total'],
-            ],
-            "headers" => $header,
-            "journal_custom_field" => $journalTable['journal_custom_field'], 
-            "detail" => $journalTable['detail'],
+        if ($id ) { 
+            $header = array(
+                "title" => $data['journal']['name']." by ".ucwords($data['journal']['username'])." on Mirrel.com",
+                "description" => $data['journal']['name']." by ".ucwords($data['journal']['username'])." on Mirrel.com. Unlocking Trader Success, Together on Mirrel.com; the global community for trader professionals.",
+                "image" => $data['journal']['image'],
+                "url" => base_url()."shared/".$data['journal']['url']."/".url_title($data['journal']['name']), 
+                "canonical" => base_url()."shared/".$data['journal']['url']."/".url_title($data['journal']['name'])
+            );
+ 
+            return view('website_global/header', $header ) 
+                . view('shortcut', $header )
+                . view('app_global/footer');
+        }
+        return view('website_global/header')
+            . view('notfound',$data)
+            . view('app_global/footer');
+    }
+
+    function d($url, $journal_detail_id){
+        $get = $this->request->getVar();
+ 
+        $url = str_replace(["'", "\'", '"', "#"], "", $url);
+        $id = model("Core")->select("id", "journal", "url = '$url'  AND presence = 1 AND permissionId = 20");
+        if ($id ) { 
+
+            $images = [];
+    
+            $q = "SELECT  j.*, a.username, a.picture,  p.name AS 'plan', a.party, p.icon
+            FROM journal as j
+            JOIN account as a on a.id = j.accountId
+            JOIN plans AS p ON p.id = a.plansId
+            where j.url = '$url' and j.presence = 1"; 
+            $data['journal'] = $this->db->query($q)->getResultArray()[0]; 
+     
+            $header = array(
+                "title" => $data['journal']['name']." by ".ucwords($data['journal']['username'])." on Mirrel.com",
+                "description" => $data['journal']['name']." by ".ucwords($data['journal']['username'])." on Mirrel.com. Unlocking Trader Success, Together on Mirrel.com; the global community for trader professionals.",
+                "image" => $data['journal']['image'],
+                "url" => base_url()."shared/".$data['journal']['url']."/".url_title($data['journal']['name']), 
+                "canonical" => base_url()."shared/".$data['journal']['url']."/".url_title($data['journal']['name']),
+            );
+            $data['header'] = $header;
+
+            $q1 = "SELECT  f, name, iType, suffix, eval from journal_custom_field where journalId = '$id' and presence = 1 order by sorting ASC";  
+            $detail = $this->db->query($q1)->getResultArray();
+            $items = [];
+
+            $evaluateFormula = function ($data, $formula) {
+                extract($data);
+                return eval("return $formula;");
+            };
+    
+
+            for($i = 1; $i<32;$i++){
+                $array['f'.$i] = (int) model("Core")->select("f".$i,"journal_detail","id=$journal_detail_id");
+            }
+
+            foreach($detail as $row){
+
+                $value =  model("Core")->select("f".$row['f'],"journal_detail","id=$journal_detail_id");
+
+                if($row['iType'] == 'select'){
+                    $value = model("Core")->select("value","journal_select"," id = '$value' ");
+                }
+                if($row['iType'] == 'user'){
+                    $value = ucwords( model("Core")->select("username","account"," id = '$value' "));
+                }
+                if($row['iType'] == 'formula'){ 
+                    $value = $evaluateFormula($array, $row['eval']);
+                }
+                if($row['iType'] == 'image'){ 
+                    $q1 = "SELECT path, fileName, caption from journal_detail_images
+                     where journalDetailId = '$journal_detail_id' and presence = 1 
+                     order by sorting ASC";  
+                    $images[] = $this->db->query($q1)->getResultArray();
+                 
+                }
+
+                array_push($items,[
+                    "key" => 'f'.$row['f'],
+                    "name" => $row['name'],
+                    "value" =>$value.$row['suffix'],
+                ]);
+            }
             
-        );
+            $data['detail'] = $detail; 
+            $data['items'] = $items; 
+            $data['images'] = $images; 
+ 
 
-        return $data;
+            if (isset($get['data'])) {
+                if ($get['data'] == 'json') {
+                    return $this->response->setJSON($data);
+                }
+            }
+            return view('website_global/header', $header ) 
+                . view('detail', $header )
+                . view('app_global/footer');
+        }
+        return view('website_global/header')
+            . view('notfound')
+            . view('app_global/footer');
     }
 
     function chart($obj = [])
@@ -257,6 +349,46 @@ class Shared extends BaseController
 
 
         }
+        return $data;
+    }
+
+
+    private function table($obj = [])
+    {
+        $id = $obj['id'];
+        $journalId = $obj['journalId'];
+        $journalTableViewId = $obj['journalTableViewId'];
+        $order = $obj['order'];
+        $limit = $obj['limit'];
+
+        $journalTable = model("Core")->journalTable($id, $journalTableViewId, "", $order, $limit);
+        // $header = array_merge(
+        //     array(
+        //         [
+        //             "tabs" => model("Core")->select("name", "journal_table_view", "ilock=1 and journalId = '$id' "),
+        //         ]
+        //     ), $journalTable['header']
+        // );
+        //$header = self::mergeArrayOfObjects($header);
+        $header = $journalTable['header'];
+ 
+        $data = array(
+            "error" => false,
+
+            "bookmark" => array(
+                "count" => (int) model("Core")->select("count(id)", "account_bookmark", "journalId = '$id' and presence = 1 "),
+            ),
+            "pages" => [
+                "page" => $order + 1,
+                "limit" => $limit,
+                "total" => $journalTable['total'],
+            ],
+            "headers" => $header,
+            "journal_custom_field" => $journalTable['journal_custom_field'], 
+            "detail" => $journalTable['detail'],
+            
+        );
+
         return $data;
     }
 

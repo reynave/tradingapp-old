@@ -16,12 +16,12 @@
                                 <small> <i class="bi bi-share"></i></small>
                             </div>
                             <input style="min-width: 400px;" type="text" class="form-control form-control-sm border-0 p-0 d-inline shadow-none"
-                                value="<?= base_url() . 'shared/' . $journal['url'] . '/sharelink'; ?>" readonly>
+                                value="<?= base_url() . 'shared/' . $journal['url'] . '/'.url_title($journal['name']); ?>" readonly>
                         </div>
                     </div>
                     <div class="d-flex mb-1">
                         <div class="align-self-center">
-                            <img src="<?= $journal['picture']; ?>" width="34" class="p-1 rounded-circle">
+                            <img src="<?php echo $_ENV['API_APP'].'uploads/picture/'.$journal['picture']; ?>" width="34" class="p-1 rounded-circle">
                             <a href="<?= base_url() . $journal['username'] ?>">
                                 <small>
                                     <?= ucwords($journal['username']); ?>
@@ -32,13 +32,8 @@
                                     title="<?= $journal['plan']; ?>" class="mx-1" width="20">
                             <?php } ?>
 
-                        </div>
-                        <div class="align-self-center mx-3"> | </div>
-                        <div class="align-self-center">
-                            <small>
-                                <?= ucwords($journal['party']) ?>
-                            </small>
-                        </div>
+                        </div> 
+                        
                         <div class="align-self-center mx-3"> | </div>
                         <div class="align-self-center">
                             <small> Since
@@ -63,7 +58,7 @@
                 data-bs-title="Reports"><i class="bi bi-flag fs-5"></i></a>
 
             <a href="javascript:;"
-                onclick="copyToClipboard('<?= base_url() . 'shared/' . $journal['url'] . '/sharelink'; ?>')"
+                onclick="copyToClipboard('<?= base_url() . 'shared/' . $journal['url'] . '/'.url_title($journal['name'] ); ?>')"
                 class="btn btn-sm rounded btn-light border me-1" data-bs-toggle="tooltip" data-bs-title="Share"><i
                     class="bi bi-share fs-5"></i></a>
 
