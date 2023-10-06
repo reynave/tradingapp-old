@@ -5,8 +5,8 @@
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
 <script type="text/javascript" src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-<script src="http://localhost:35729/livereload.js?snipver=1"></script>
+ 
+<script src="http://localhost:35729/livereload.js?snipver=1"></script>  
 
 <script>
     //  const hash = location.hash;
@@ -18,7 +18,11 @@
         ordering: false,
     });
     $(document).ready(function () {
-      
+         $('.dt').slick({
+            slidesToScroll: 1,
+            infinite: false,
+          //  variableWidth: true
+        });
         $('.journal-slick').slick({
             slidesToScroll: 4,
             infinite: false,

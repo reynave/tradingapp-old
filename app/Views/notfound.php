@@ -1,5 +1,4 @@
-<?= view('app_global/nav'); ?>
-<?= view('app_global/board_header'); ?>
+<?= view('app_global/nav'); ?> 
 
  
 <div class="container">
@@ -7,7 +6,7 @@
         <div class="col-12">
             <div class="my-5 text-center">
                 <img src="<?= base_url()?>assets/img/no-data.jpg" style="max-width: 300px;width:auto ">
-                <p>No Data Shared</p>
+                <h1 class="display-2">The page you requested cannot be found</h1>
             </div>
         </div>
     </div>

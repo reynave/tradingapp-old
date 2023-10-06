@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 class Shared extends BaseController
 {
-
+ 
     function index($url = "", $name = "")
     {
         $order = 0;
@@ -18,12 +18,12 @@ class Shared extends BaseController
 
         $id = model("Core")->select("journalId", "journal_access", "journalId = '" . $journalId . "'  AND presence = 1");
         $journalTableViewId = isset($this->request->getVar()['tab']) ? $this->request->getVar()['tab'] : model("Core")->select("id", "journal_table_view", "ilock=1 and journalId = '$id' ");
-        $data['tabs']  = [];
+        $data['tabs'] = [];
         if ($id && $journalTableViewId !== null) {
 
             $obj = [
                 "order" => 0,
-                "limit" => 100,
+                "limit" => 1000,
                 "id" => $id,
                 "journalId" => $journalId,
                 "journalTableViewId" => $journalTableViewId,
@@ -36,7 +36,7 @@ class Shared extends BaseController
                 $data = self::chart($obj);
             }
 
-           
+
             $journal_table_view = $this->db->query("SELECT id, name, board 
             FROM journal_table_view 
             WHERE presence = 1 and share = 1 and journalId = '$id' order by input_date ASC");
@@ -47,7 +47,8 @@ class Shared extends BaseController
                         "name" => model("Core")->select("name", "journal_table_view", "ilock=1 and journalId = '$id' "),
                         "board" => model("Core")->select("board", "journal_table_view", "ilock=1 and journalId = '$id' "),
                     ]
-                ), $journal_table_view->getResultArray()
+                ),
+                $journal_table_view->getResultArray()
             );
             $data['tabs'] = $tabs;
 
@@ -73,86 +74,79 @@ class Shared extends BaseController
         if ($id && $journalTableViewId !== null) {
 
             $header = array(
-                "title" => $data['journal']['name']." by ".ucwords($data['journal']['username'])." on Mirrel.com",
-                "description" => $data['journal']['name']." by ".ucwords($data['journal']['username'])." on Mirrel.com. Unlocking Trader Success, Together on Mirrel.com; the global community for trader professionals.",
+                "title" => $data['journal']['name'] . " by " . ucwords($data['journal']['username']) . " on Mirrel.com",
+                "description" => $data['journal']['name'] . " by " . ucwords($data['journal']['username']) . " on Mirrel.com. Unlocking Trader Success, Together on Mirrel.com; the global community for trader professionals.",
                 "image" => $data['journal']['image'],
-                "url" => base_url()."shared/".$data['journal']['url']."/".url_title($data['journal']['name']), 
-                "canonical" => base_url()."shared/".$data['journal']['url']."/".url_title($data['journal']['name'])
+                "url" => base_url() . "shared/" . $data['journal']['url'] . "/" . url_title($data['journal']['name']),
+                "canonical" => base_url() . "shared/" . $data['journal']['url'] . "/" . url_title($data['journal']['name'])
             );
 
-
-            return view('website_global/header', $header )
-                . view($board, $data)
+            return view('website_global/header', $header)
+                . view("share_" . $board, $data)
                 . view('app_global/footer');
         }
-        return view('website_global/header')
-            . view('notfound',$data)
+        return view('website_global/header', model("Core")->headerNotFound())
+            . view('notfound', )
             . view('app_global/footer');
     }
-
-    function shorcut($url){ 
-        $get = $this->request->getVar();
  
+    function shorcut($url)
+    {
+        $get = $this->request->getVar();
+
         $url = str_replace(["'", "\'", '"', "#"], "", $url);
         $id = model("Core")->select("id", "journal", "url = '$url'  AND presence = 1 AND permissionId = 20");
-     
+
         $q = "SELECT  j.*, a.username, a.picture,  p.name AS 'plan', a.party, p.icon
         FROM journal as j
         JOIN account as a on a.id = j.accountId
         JOIN plans AS p ON p.id = a.plansId
-        where j.url = '$url' and j.presence = 1"; 
-        $data['journal'] = $this->db->query($q)->getResultArray()[0]; 
- 
+        where j.url = '$url' and j.presence = 1";
+        $data['journal'] = $this->db->query($q)->getResultArray()[0];
+
         if (isset($get['data'])) {
             if ($get['data'] == 'json') {
                 return $this->response->setJSON($data);
             }
         }
 
-        if ($id ) { 
+        if ($id) {
             $header = array(
-                "title" => $data['journal']['name']." by ".ucwords($data['journal']['username'])." on Mirrel.com",
-                "description" => $data['journal']['name']." by ".ucwords($data['journal']['username'])." on Mirrel.com. Unlocking Trader Success, Together on Mirrel.com; the global community for trader professionals.",
+                "title" => $data['journal']['name'] . " by " . ucwords($data['journal']['username']) . " on Mirrel.com",
+                "description" => $data['journal']['name'] . " by " . ucwords($data['journal']['username']) . " on Mirrel.com. Unlocking Trader Success, Together on Mirrel.com; the global community for trader professionals.",
                 "image" => $data['journal']['image'],
-                "url" => base_url()."shared/".$data['journal']['url']."/".url_title($data['journal']['name']), 
-                "canonical" => base_url()."shared/".$data['journal']['url']."/".url_title($data['journal']['name'])
+                "url" => base_url() . "shared/" . $data['journal']['url'] . "/" . url_title($data['journal']['name']),
+                "canonical" => base_url() . "shared/" . $data['journal']['url'] . "/" . url_title($data['journal']['name'])
             );
- 
-            return view('website_global/header', $header ) 
-                . view('shortcut', $header )
+
+            return view('website_global/header', $header)
+                . view('share_shortcut', $header)
                 . view('app_global/footer');
         }
-        return view('website_global/header')
-            . view('notfound',$data)
+        return view('website_global/header', model("Core")->headerNotFound())
+            . view('notfound')
             . view('app_global/footer');
     }
 
-    function d($url, $journal_detail_id){
+    function d($url, $journal_detail_id)
+    {
         $get = $this->request->getVar();
- 
         $url = str_replace(["'", "\'", '"', "#"], "", $url);
         $id = model("Core")->select("id", "journal", "url = '$url'  AND presence = 1 AND permissionId = 20");
-        if ($id ) { 
+        $journal_detail_id = model("Core")->select("id", "journal_detail", "id = '$journal_detail_id'  AND presence = 1");
+
+        if ($id && $journal_detail_id != "") {
 
             $images = [];
-    
+
             $q = "SELECT  j.*, a.username, a.picture,  p.name AS 'plan', a.party, p.icon
             FROM journal as j
             JOIN account as a on a.id = j.accountId
             JOIN plans AS p ON p.id = a.plansId
-            where j.url = '$url' and j.presence = 1"; 
-            $data['journal'] = $this->db->query($q)->getResultArray()[0]; 
-     
-            $header = array(
-                "title" => $data['journal']['name']." by ".ucwords($data['journal']['username'])." on Mirrel.com",
-                "description" => $data['journal']['name']." by ".ucwords($data['journal']['username'])." on Mirrel.com. Unlocking Trader Success, Together on Mirrel.com; the global community for trader professionals.",
-                "image" => $data['journal']['image'],
-                "url" => base_url()."shared/".$data['journal']['url']."/".url_title($data['journal']['name']), 
-                "canonical" => base_url()."shared/".$data['journal']['url']."/".url_title($data['journal']['name']),
-            );
-            $data['header'] = $header;
+            where j.url = '$url' and j.presence = 1";
+            $data['journal'] = $this->db->query($q)->getResultArray()[0];
 
-            $q1 = "SELECT  f, name, iType, suffix, eval from journal_custom_field where journalId = '$id' and presence = 1 order by sorting ASC";  
+            $q1 = "SELECT  f, name, iType, suffix, eval, hide from journal_custom_field where journalId = '$id' and presence = 1 order by sorting ASC";
             $detail = $this->db->query($q1)->getResultArray();
             $items = [];
 
@@ -160,57 +154,69 @@ class Shared extends BaseController
                 extract($data);
                 return eval("return $formula;");
             };
-    
 
-            for($i = 1; $i<32;$i++){
-                $array['f'.$i] = (int) model("Core")->select("f".$i,"journal_detail","id=$journal_detail_id");
+
+            for ($i = 1; $i < 32; $i++) {
+                $array['f' . $i] = (int) model("Core")->select("f" . $i, "journal_detail", "id=$journal_detail_id");
             }
 
-            foreach($detail as $row){
+            foreach ($detail as $row) {
 
-                $value =  model("Core")->select("f".$row['f'],"journal_detail","id=$journal_detail_id");
+                $value = model("Core")->select("f" . $row['f'], "journal_detail", "id=$journal_detail_id");
 
-                if($row['iType'] == 'select'){
-                    $value = model("Core")->select("value","journal_select"," id = '$value' ");
+                if ($row['iType'] == 'select') {
+                    $value = model("Core")->select("value", "journal_select", " id = '$value' ");
                 }
-                if($row['iType'] == 'user'){
-                    $value = ucwords( model("Core")->select("username","account"," id = '$value' "));
+                if ($row['iType'] == 'user') {
+                    $value = ucwords(model("Core")->select("username", "account", " id = '$value' "));
                 }
-                if($row['iType'] == 'formula'){ 
+                if ($row['iType'] == 'formula') {
                     $value = $evaluateFormula($array, $row['eval']);
                 }
-                if($row['iType'] == 'image'){ 
-                    $q1 = "SELECT path, fileName, caption from journal_detail_images
+                if ($row['iType'] == 'image') {
+                    $q1 = "SELECT path, fileName, caption, '" . $row['name'] . "' as 'column'  from journal_detail_images
                      where journalDetailId = '$journal_detail_id' and presence = 1 
-                     order by sorting ASC";  
-                    $images[] = $this->db->query($q1)->getResultArray();
-                 
+                     order by sorting ASC ,input_date ASC";
+                    $images = $this->db->query($q1)->getResultArray(); 
                 }
 
-                array_push($items,[
-                    "key" => 'f'.$row['f'],
+                array_push($items, [
+                    "key" => 'f' . $row['f'],
                     "name" => $row['name'],
-                    "value" =>$value.$row['suffix'],
+                    "iType" => $row['iType'],
+                    "hide" => (boolean) $row['hide'],
+                    "value" => $value . $row['suffix'],
                 ]);
             }
-            
-            $data['detail'] = $detail; 
-            $data['items'] = $items; 
-            $data['images'] = $images; 
- 
+
+            $data['detail'] = $detail;
+            $data['items'] = $items;
+            $data['images'] = $images;
+            $data['journal_detail_id'] = $journal_detail_id;
+            $header = array(
+                "title" => $data['journal']['name'] . " by " . ucwords($data['journal']['username']) . " on Mirrel.com",
+                "h1" => $data['journal']['name'],
+                "description" => $data['journal']['name'] . " by " . ucwords($data['journal']['username']) . " on Mirrel.com. Unlocking Trader Success, Together on Mirrel.com; the global community for trader professionals.",
+                "image" => count($images) > 0 ? $images[0]['path'] . $images[0]['fileName'] : $data['journal']['image'],
+                "url" => base_url() . "shared/" . $data['journal']['url'] . "/" . url_title($data['journal']['name']),
+                "canonical" => base_url() . "shared/" . $data['journal']['url'] . "/" . url_title($data['journal']['name']),
+            );
+            $data['header'] = $header;
 
             if (isset($get['data'])) {
                 if ($get['data'] == 'json') {
                     return $this->response->setJSON($data);
                 }
             }
-            return view('website_global/header', $header ) 
-                . view('detail', $header )
+            return view('website_global/header', $header)
+                . view('share_detail', $data)
                 . view('app_global/footer');
         }
-        return view('website_global/header')
+
+        return view('website_global/header', model("Core")->headerNotFound())
             . view('notfound')
             . view('app_global/footer');
+
     }
 
     function chart($obj = [])
@@ -332,8 +338,8 @@ class Shared extends BaseController
             if ($journal_chart['xaxis'] != "") {
                 $startup = false;
             }
- 
- 
+
+
             $data = array(
                 "error" => false,
 
@@ -344,7 +350,7 @@ class Shared extends BaseController
                 "field_chart" => $journal_chart,
                 "where_chart" => $selectWhereOption,
                 "data_chart" => $startup == false ? model("Core")->chartJsData($journal_chart, $journalTable['detail'], $y, $selectWhereOption) : [],
-              
+
             );
 
 
@@ -352,8 +358,7 @@ class Shared extends BaseController
         return $data;
     }
 
-
-    private function table($obj = [])
+    private function tableVer1($obj = [])
     {
         $id = $obj['id'];
         $journalId = $obj['journalId'];
@@ -371,7 +376,7 @@ class Shared extends BaseController
         // );
         //$header = self::mergeArrayOfObjects($header);
         $header = $journalTable['header'];
- 
+
         $data = array(
             "error" => false,
 
@@ -384,14 +389,98 @@ class Shared extends BaseController
                 "total" => $journalTable['total'],
             ],
             "headers" => $header,
-            "journal_custom_field" => $journalTable['journal_custom_field'], 
+            "journal_custom_field" => $journalTable['journal_custom_field'],
             "detail" => $journalTable['detail'],
-            
+
         );
 
         return $data;
     }
+    private function table($obj = [])
+    {
+        $id = $obj['id'];
+        $journalId = $obj['journalId'];
+        $journalTableViewId = $obj['journalTableViewId'];
+        $order = $obj['order'];
+        $limit = $obj['limit'];
 
+
+        $q1 = "SELECT  id, f, name, iType, suffix, eval, hide from journal_custom_field 
+        where journalId = '$journalId' and presence = 1 order by sorting ASC";
+        $journal_custom_field = $this->db->query($q1)->getResultArray();
+       
+        $q2 = "SELECT * from journal_detail 
+        where journalId = '$journalId' and presence = 1 and archives = 0 
+        order by sorting ASC
+        limit  $order, $limit  ";
+        $journal_detail = $this->db->query($q2)->getResultArray();
+
+        $evaluateFormula = function ($data, $formula) {
+            extract($data);
+            return eval("return $formula;");
+        };
+    
+        $items = []; 
+        foreach ($journal_detail as $row) {
+
+            $item = [];
+            for ($i = 1; $i < 32; $i++) {
+                $array['f' . $i] = (int) $row['f'.$i];
+            }
+            foreach( $journal_custom_field as $f){
+                $hide = model("Core")->select("hide","journal_table_view_show","journalTableViewId = '$journalTableViewId' and journalCustomFieldId = '".$f['id']."' and presence = 1 ");
+                if( $hide != 1 ){
+                    $value = $row['f'.$f['f']];
+                    if ($f['iType'] == 'select') {
+                        $value = model("Core")->select("value", "journal_select", " id = '$value' ");
+                    }
+                    if ($f['iType'] == 'user') {
+                        $value = ucwords(model("Core")->select("username", "account", " id = '$value' "));
+                    }
+                    if ($f['iType'] == 'image') {
+                        $value = $value .' '.$f['iType'].'s';
+                    } 
+                    if ($f['iType'] == 'formula') {
+                        $value = $evaluateFormula($array, $f['eval']);
+                    }
+                   if( $f['hide'] != 1 ){
+                        $item[] =  [
+                            // "journalTableViewId" =>  $journalTableViewId ,
+                            // "journalCustomFieldId" => $f['id'],
+                            "id" => $row['id'],
+                            "key" => 'f'.$f['f'],
+                            "name" =>  $f['name'],
+                            "hide" =>  $f['hide'],
+                            "iType" =>  $f['iType'],
+                            "value" =>   $value.$f['suffix'],
+                        ];
+                   }
+                    
+                }
+              
+            } 
+
+            $items[] = $item; 
+            
+        }
+ 
+
+        $data = array(
+            "error" => false, 
+            "bookmark" => array(
+                "count" => (int) model("Core")->select("count(id)", "account_bookmark", "journalId = '$id' and presence = 1 "),
+            ),
+            "pages" => [
+                "page" => $order + 1,
+                "limit" => $limit,
+                "total" => count($items),
+            ], 
+            "items" => $items,
+
+        );
+
+        return $data;
+    }
     private function mergeArrayOfObjects($arrays)
     {
         $result = [];

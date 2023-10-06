@@ -70,34 +70,18 @@ class Core extends Model
         }
     }
 
-    function buildTree($arr, $parentId = 0)
-    {
-        $tree = [];
-
-        foreach ($arr as $item) {
-            if ($item['parent_id'] == $parentId) {
-                $item['children'] = self::buildTree($arr, $item['id']);
-                $tree[] = $item;
-            }
-        }
-
-        return $tree;
+    function headerNoFound(){
+       return [
+            "title" => "Page not found",
+            "description" => "The page you requested cannot be found",
+            "image" => "",
+            "url" => "",
+            "canonical" => "",
+            "journal" => "",
+       ];
     }
 
-    function deleteNode($parentId)
-    {
-
-        // Mengupdate nilai presence menjadi 0 pada parent yang dihapus
-        $this->db->table('pages')->where('id', $parentId)->update(['presence' => 0]);
-
-        // Mengambil semua child yang terkait dengan parent yang dihapus
-        $children = $this->db->table('pages')->where('parent_id', $parentId)->get()->getResultArray();
-
-        // Menghapus atau mengupdate presence pada setiap child secara rekursif
-        foreach ($children as $child) {
-            self::deleteNode($child['id']);
-        }
-    }
+    
 
     function put($data = [], $table = "", $where = "")
     {
@@ -147,7 +131,7 @@ class Core extends Model
 
 
 
-        $c = "SELECT id, ilock, hideDEL, name, f,iType, width, textAlign, suffix, sorting, eval, 
+        $c = "SELECT id, ilock, hide, name, f,iType, width, textAlign, suffix, sorting, eval, 
         CONCAT('f',f) AS 'key', '' as showEvalDev , '' as 'total'
         FROM journal_custom_field 
         WHERE journalId = '$id' AND presence = 1
