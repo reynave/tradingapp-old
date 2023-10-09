@@ -1,4 +1,4 @@
-<?= view('website_global/nav'); ?>
+<?= view('app_global/nav'); ?>
 <div class="bgn">
 <div class="area" >
             <ul class="circles">
@@ -16,7 +16,7 @@
     </div >
 </div>
 
-<div class="contentHeight content">
+<div class=" content">
     <div class="container ">
         <div class="row g-2">
             <div class="col-md-7 col-lg-5 col-12">
@@ -30,7 +30,7 @@
                         <a href="#colaboration">Colaboration</a>,
                         and <a href="#trading">Trading</a>
                     </h4>
-                    <a href="" class="btn btn-dark p-4 my-4">
+                    <a href="<?php echo base_url()?>" class="btn btn-dark p-4 my-4">
                         <strong class="fs-5">Get Started - 100% It's Free</strong>
                     </a>
                 </div>

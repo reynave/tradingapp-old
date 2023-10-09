@@ -21,8 +21,8 @@
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
 <script type="text/javascript" src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-
-<script src="http://localhost:35729/livereload.js?snipver=1"></script>
+<!-- 
+<script src="http://localhost:35729/livereload.js?snipver=1"></script> -->
 
 <script>
  
@@ -33,6 +33,15 @@
         } 
     });
 </script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EQ52RX4Q1R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-EQ52RX4Q1R');
+</script>
 </body>
 
-</html>
+</html> 

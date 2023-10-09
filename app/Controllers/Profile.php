@@ -46,7 +46,15 @@ class Profile extends BaseController
                 }
             }
 
-            return view('website_global/header')
+            $header = array(
+                "title" => ucwords($username). " on Mirrel.com", 
+                "description" =>  ucwords($username) . " on Mirrel.com. Unlocking Trader Success, Together on Mirrel.com; the global community for trader professionals.",
+                "image" =>  $data['journal'][0]['image'],
+                "url" => base_url() . url_title(ucwords($username)),
+                "canonical" => base_url() . url_title(ucwords($username)),
+            );
+
+            return view('website_global/header',$header )
                 . view('profile', $data)
                 . view('app_global/footer');
         }

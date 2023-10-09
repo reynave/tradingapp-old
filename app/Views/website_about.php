@@ -1,26 +1,59 @@
-<style>
-    body {
-        background-color: #242424ff;
-        color: #fff;
-    }
+<?= view('website_global/nav'); ?>
 
-    a {
-        color: #fff;
-    }
-</style>
 
-<div class="container">
-    <div class="row">
-        <div class="col-12">
-            <h1 class="display-1">Everyone has a story to tell.</h1>
+<div class="height-100">
 
-            <p>
-            Medium is a home for human stories and ideas. Here, anyone can share insightful perspectives, useful knowledge, and life wisdom with the world—without building a mailing list or a following first. The internet is noisy and chaotic; Medium is quiet yet full of insight. It’s simple, beautiful, collaborative, and helps you find the right audience for whatever you have to say.
-            </p>
 
-            <p>
-            We believe that what you read and write matters. Words can divide or empower us, inspire or discourage us. In a world where the most sensational and surface-level stories often win, we’re building a system that rewards depth, nuance, and time well spent. A space for thoughtful conversation more than drive-by takes, and substance over packaging.
-</p>
+
+    <div class="container ">
+        <div class="row g-2">
+            <div class="col-12 text-center my-5">
+                <h1 class="mb-3">About Us</h1>
+            </div>
         </div>
     </div>
+    <div class="content-xs">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <p>
+                        Back in 2016 a group of programmers and trader decide to trade with AI. Quickly we found
+                        that no
+                        matter
+                        how many trading courses we took, we couldn’t be profitable. We simply just didn’t know what we
+                        were
+                        going
+                        right or wrong.
+                    </p>
+
+                    <p>
+                        This is when we decided we needed a tool to track closely our trades. We started tracking our
+                        trades
+                        on
+                        an
+                        excel sheet. Our needs quickly grew and the excel sheets were no longer reasonable to keep, as
+                        they
+                        needed
+                        more features for us to get useful feedback out of them.
+                    </p>
+
+                    <p>
+                        We needed more information, and we wanted to concentrate just on trading not in improving our
+                        excel
+                        sheets.
+                        That is when we gather as a team and we decided to create Mirrel.com.
+                    </p>
+
+                    <p>
+                        Now a day Mirrel.com is the most complete trade journal in the market supported by thousands of
+                        traders
+                        looking to track their trades closely with the minimum effort
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>

@@ -5,8 +5,8 @@
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
 
 <script type="text/javascript" src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
- 
-<script src="http://localhost:35729/livereload.js?snipver=1"></script>  
+
+<!-- <script src="http://localhost:35729/livereload.js?snipver=1"></script> -->
 
 <script>
     //  const hash = location.hash;
@@ -18,10 +18,10 @@
         ordering: false,
     });
     $(document).ready(function () {
-         $('.dt').slick({
+        $('.dt').slick({
             slidesToScroll: 1,
             infinite: false,
-          //  variableWidth: true
+            //  variableWidth: true
         });
         $('.journal-slick').slick({
             slidesToScroll: 4,
@@ -29,12 +29,12 @@
             variableWidth: true
         });
 
-        if(localStorage.getItem("app.mirrel.com") ){
+        if (localStorage.getItem("app.mirrel.com")) {
             $('#singin').hide();
-            $('#signed').show(); 
-        } 
+            $('#signed').show();
+        }
     });
-    
+
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text)
             .then(() => {
@@ -50,6 +50,15 @@
         .forEach(tooltip => {
             new bootstrap.Tooltip(tooltip)
         })
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EQ52RX4Q1R"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-EQ52RX4Q1R');
 </script>
 </body>
 

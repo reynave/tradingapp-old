@@ -120,7 +120,7 @@
                             </div>
                             <div class="list">
                                 <?php foreach($team as $rec) { ?>
-                                    <img src="<?= $rec['picture']?>" class="rounded-circle me-2 mb-2" width="50" data-bs-toggle="tooltip" data-bs-title="<?= ucwords($rec['username'])?>">
+                                    <img src="<?php echo $_ENV['API_APP'].'uploads/picture/';?><?= $rec['picture']?>" class="rounded-circle me-2 mb-2" width="50" data-bs-toggle="tooltip" data-bs-title="<?= ucwords($rec['username'])?>">
                                 <?php } ?>
                             </div>
                         </div>
